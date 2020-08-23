@@ -57,3 +57,7 @@ The user could adjust some coefficients, such as the moment of inertia ratio bet
 *Postprocessing*: Some MATLAB files that could be used to plot pushover curve or extract EDPs from dynamic analysis.
 
 *Preprocessing*: The python codes relating to preprocessing the electronic steel section database is stored here. The user does not need to access to this folder.
+
+### Any questions or suggestion:
+
+Send an email to: guanxingquan@ucla.edu
