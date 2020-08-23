@@ -1,0 +1,5 @@
+Building_0
+3-story building provided by FEMA P-2012 Assessing seismic performance of buildings with configuration irregularities.
+
+Building_x:
+an exmaple to show how to input the building information.

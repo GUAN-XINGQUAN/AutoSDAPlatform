@@ -1,0 +1,64 @@
+# ##################################################################
+# 		          Geometry                                 #
+# ##################################################################
+
+The unit of each input parameter:
+
+number of story: unitless
+number of X bay: unitless
+first story height: ft
+typical story height: ft
+X bay width: ft
+
+
+# ##################################################################
+# 		          Loads	                                   #
+# ##################################################################
+
+The unit of each input parameter:
+
+floor dead load: psf
+floor live load: psf
+beam dead load: lb/ft
+beam live load: lb/ft
+leaning column dead load: kips
+leaning column live load: kips
+
+
+All these variables are entered with M rows
+M: the number of floor levels except the ground floor
+
+
+# ##################################################################
+# 		          ELF parameters                           #
+# ##################################################################
+
+Reference: ASCE 7-10 Section 12.8
+
+The unit of each input parameter:
+
+Ss: g
+S1: g
+Cd: unitless
+R: unitless
+I: unitless
+rho: unitless
+Fa: unitless
+Fv: unitless
+Cu: unitless
+Ct: unitless
+x: unitless
+
+# ##################################################################
+# 		          Member Depth                             #
+# ##################################################################
+
+exterior column: a string defines depth for exterior columns, e.g. W14
+interior column: a string defines depth for interior columns, e.g. W14
+beam: a string defines depth for beams, e.g. W33
+
+All the strings above could either be a single depth, or multiple depths.
+If it is multiple depths, please split each depth with a comma followed by a space.
+
+e.g. we want to use W27-W33 for beam. Then we can fill the blank with W27, W30, W30.
+
