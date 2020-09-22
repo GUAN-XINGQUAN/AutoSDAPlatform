@@ -29,7 +29,6 @@ from global_variables import BEAM_TO_COLUMN_RATIO
 from global_variables import UPPER_LOWER_COLUMN_Zx
 from global_variables import RBS_STIFFNESS_FACTOR
 
-
 ##########################################################################
 #                         Function Implementation                        #
 ##########################################################################
