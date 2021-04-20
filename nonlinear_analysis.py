@@ -505,13 +505,9 @@ class NonlinearAnalysis(object):
             # Write nodal masses for each floor level
             for i in range(2, building.geometry['number of story']+2):
                 tclfile.write("# Level%i \n" % i)
-                for j in range(1, building.geometry['number of X bay']+3):
-                    if j < building.geometry['number of X bay']+2:
-                        # Write mass for nodes in structural columns
-                        tclfile.write("mass\t%i%i%i%i" % (j, i, 1, 1))  # Nodal mass command and node tag
-                    else:
-                        # Write mass for nodes in leaning column
-                        tclfile.write("mass\t%i%i" % (j, i))  # Nodal mass command (leaning column)
+                for j in range(1, building.geometry['number of X bay']+2):
+                    # Write mass for nodes in structural columns
+                    tclfile.write("mass\t%i%i%i%i" % (j, i, 1, 1))  # Nodal mass command and node tag
                     tclfile.write("\t$NodalMassFloor%i" % i)  # Mass along X direction
                     tclfile.write("\t$Negligible\t$Negligible \n")  # Mass along Y and RotZ doesn't matter
                 tclfile.write("\n")

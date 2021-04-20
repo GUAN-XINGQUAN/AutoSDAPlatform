@@ -288,7 +288,7 @@ class ElasticAnalysis(object):
             for i in range(2, building.geometry['number of story']+2):
                 tclfile.write("set\tFloor%iWeight\t%.2f; \n" % (i, building.gravity_loads['floor weight'][i-2]))
             tclfile.write("set\tFrameTributaryMassRatio\t%s; \n" % (1.0 / building.geometry['number of X LFRS']))
-            tclfile.write("set\tTotalNodesPerFloor\t%i; \n" % (building.geometry['number of X bay']+2))
+            tclfile.write("set\tTotalNodesPerFloor\t%i; \n" % (building.geometry['number of X bay']+1))
             for i in range(2, building.geometry['number of story']+2):
                 tclfile.write("set\tNodalMassFloor%i" % i)
                 tclfile.write("\t[expr $Floor%iWeight*$FrameTributaryMassRatio/$TotalNodesPerFloor/$g]; \n" % i)
@@ -297,11 +297,8 @@ class ElasticAnalysis(object):
             # Write nodal masses for each floor level
             for i in range(2, building.geometry['number of story']+2):
                 tclfile.write("# Level %i \n" % i)
-                for j in range(1, building.geometry['number of X bay']+3):
-                    if j < building.geometry['number of X bay']+2:
-                        tclfile.write("mass\t%i%i%i" % (j, i, 1))  # Nodal mass command and node tag
-                    else:
-                        tclfile.write("mass\t%i%i" % (j, i))  # Nodal mass for leaning column
+                for j in range(1, building.geometry['number of X bay']+2):
+                    tclfile.write("mass\t%i%i%i" % (j, i, 1))  # Nodal mass command and node tag
                     tclfile.write("\t$NodalMassFloor%i" % i)  # Mass along X direction
                     tclfile.write("\t$Negligible\t$Negligible\n")  # Mass along Y and RotZ doesn't matter
                 tclfile.write("\n")

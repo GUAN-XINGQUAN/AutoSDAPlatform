@@ -92,14 +92,14 @@ def seismic_design(building_id, base_directory):
     iteration = 0
     # Perform the optimization process
     last_member = copy.deepcopy(building_1.member_size)
-    while np.max(building_1.elastic_response['story drift']) * 5.5 * RBS_STIFFNESS_FACTOR \
+    while np.max(building_1.elastic_response['story drift']) * building_1.elf_parameters['Cd'] * RBS_STIFFNESS_FACTOR \
             <= 0.025/building_1.elf_parameters['rho']:
         print("Member size after optimization %i" % iteration)
         print("Exterior column:", building_1.member_size['exterior column'])
         print("Interior column:", building_1.member_size['interior column'])
         print("Beam:", building_1.member_size['beam'])
         print("Current story drifts: (%)")
-        print(building_1.elastic_response['story drift'] * 5.5 * RBS_STIFFNESS_FACTOR * 100)
+        print(building_1.elastic_response['story drift'] * building_1.elf_parameters['Cd'] * RBS_STIFFNESS_FACTOR * 100)
         # Before optimization, record the size in the last step.
         last_member = copy.deepcopy(building_1.member_size)
         # Perform optimization
