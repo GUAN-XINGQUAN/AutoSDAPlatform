@@ -1036,9 +1036,7 @@ def seismic_design(building_id, base_directory):
     construction_drift.to_csv('ConstructionDrift.csv', sep=',', index=False)
 
     # Store the doubler plate thickness
-    header = []
-    for bay in range(building_1.geometry['number of X bay']+1):
-        header.append('connection %s' % bay)
+    header = ['connection %s' % bay for bay in range(building_1.geometry['number of X bay']+1)]
     # Initialize the dataframe to store doubler plate thickness
     optimal_doubler_plate = pd.DataFrame(columns=header)
     construction_doubler_plate = pd.DataFrame(columns=header)
@@ -1052,38 +1050,22 @@ def seismic_design(building_id, base_directory):
     construction_doubler_plate.to_csv('ConstructionDoublerPlate.csv', sep=',', index=False)
 
     # Store the strong column beam ratio
-    # Define the headers for the dataframe
-    header = []
-    for bay in range(building_1.geometry['number of X bay']+1):
-        if bay == 0 or bay == building_1.geometry['number of X bay']:
-            header.append('exterior joint')
-        else:
-            header.append('interior joint')
-    header.append('design ratio')
+    header = ['joint %s' % bay for bay in range(building_1.geometry['number of X bay'] + 1)]
     # Initialize the dataframe using the headers defined above
     optimal_column_beam_ratio = pd.DataFrame(columns=header)
     construction_column_beam_ratio = pd.DataFrame(columns=header)
     # Fill this dataframe
     for row in range(building_1.geometry['number of story']):
-        for col in range(building_1.geometry['number of X bay']+2):
-            if col == 0 or col == building_1.geometry['number of X bay']:
-                name = 'exterior joint'
-            elif col == building_1.geometry['number of X bay']+1:
-                name = 'design ratio'
-            else:
-                name = 'interior joint'
-            if row == building_1.geometry['number of story']-1:
+        for col in range(building_1.geometry['number of X bay'] + 1):
+            name = header[col]
+            if row == building_1.geometry['number of story'] - 1:
                 optimal_column_beam_ratio.loc[row, name] = 'NA'
                 construction_column_beam_ratio.loc[row, name] = 'NA'
             else:
-                if col != building_1.geometry['number of X bay']+1:
-                    optimal_column_beam_ratio.loc[row, name] = connection_set[row][col].moment['Mpc'] \
-                                                               / connection_set[row][col].moment['Mpb']
-                    construction_column_beam_ratio.loc[row, name] = construction_connection_set[row][col].moment['Mpc']\
-                                                                    /construction_connection_set[row][col].moment['Mpb']
-                else:
-                    optimal_column_beam_ratio.loc[row, name] = 1 / BEAM_TO_COLUMN_RATIO
-                    construction_column_beam_ratio.loc[row, name] = 1 / BEAM_TO_COLUMN_RATIO
+                optimal_column_beam_ratio.loc[row, name] = connection_set[row][col].moment['Mpc'] \
+                                                           / connection_set[row][col].moment['Mpb']
+                construction_column_beam_ratio.loc[row, name] = construction_connection_set[row][col].moment['Mpc'] \
+                                                                / construction_connection_set[row][col].moment['Mpb']
     optimal_column_beam_ratio.to_csv('OptimalColumnBeamRatio.csv', sep=',', index=False)
     construction_column_beam_ratio.to_csv('ConstructionColumnBeamRatio.csv', sep=',', index=False)
 
