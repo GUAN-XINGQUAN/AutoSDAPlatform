@@ -1072,9 +1072,7 @@ def seismic_design(building_id, base_directory):
 
     # Store the demand to capacity ratio for columns
     # Define the headers for the columns DC ratio
-    header = []
-    for bay in range(building_1.geometry['number of X bay']+1):
-        header.extend(['column %s' % bay])
+    header = ['column %s' % bay for bay in range(building_1.geometry['number of X bay'] + 1)]
     force_list = ['axial', 'shear', 'flexural']
     for force in force_list:
         column_DC = [[0] * (building_1.geometry['number of X bay'] + 1)
@@ -1093,9 +1091,7 @@ def seismic_design(building_id, base_directory):
 
     # Store the demand to capacity ratio for beams
     # Define the headers for the beams DC ratio
-    header = []
-    for bay in range(building_1.geometry['number of X bay']):
-        header.extend(['beam %s' % bay])
+    header = ['beam %s' % bay for bay in range(building_1.geometry['number of X bay'])]
     force_list = ['shear', 'flexural']
     for force in force_list:
         beam_DC = [[0] * (building_1.geometry['number of X bay'])
