@@ -1020,19 +1020,16 @@ def seismic_design(building_id, base_directory):
 
 
     # Store the member sizes and story drift into csv files.
-    optimal_member_size = pd.DataFrame(columns=['exterior column', 'interior column', 'beam'])
-    construction_size = pd.DataFrame(columns=['exterior column', 'interior column', 'beam'])
-    optimal_drift = pd.DataFrame(columns=['story drift'])
-    construction_drift = pd.DataFrame(columns=['story drift'])
-    for story in range(building_1.geometry['number of story']):
-        optimal_member_size.loc[story, 'exterior column'] = building_1.member_size['exterior column'][story]
-        optimal_member_size.loc[story, 'interior column'] = building_1.member_size['interior column'][story]
-        optimal_member_size.loc[story, 'beam'] = building_1.member_size['beam'][story]
-        construction_size.loc[story, 'exterior column'] = building_3.construction_size['exterior column'][story]
-        construction_size.loc[story, 'interior column'] = building_3.construction_size['interior column'][story]
-        construction_size.loc[story, 'beam'] = building_3.construction_size['beam'][story]
-        optimal_drift.loc[story, 'story drift'] = building_1.elastic_response['story drift'][story]
-        construction_drift.loc[story, 'story drift'] = building_3.elastic_response['story drift'][story]
+    optimal_member_size = pd.DataFrame(data=np.column_stack([building_1.member_size['exterior column'],
+                                                         building_1.member_size['interior column'],
+                                                         building_1.member_size['beam']]),
+                                       columns=['exterior column', 'interior column', 'beam'])
+    construction_size = pd.DataFrame(data=np.column_stack([building_3.construction_size['exterior column'],
+                                                       building_3.construction_size['interior column'],
+                                                       building_3.construction_size['beam']]),
+                                     columns=['exterior column', 'interior column', 'beam'])
+    optimal_drift = pd.DataFrame(data=building_1.elastic_response['story drift'], columns=['story drift'])
+    construction_drift = pd.DataFrame(data=building_3.elastic_response['story drift'], columns=['story drift'])
     optimal_member_size.to_csv('OptimalMemberSize.csv', sep=',', index=False)
     construction_size.to_csv('ConstructionSize.csv', sep=',', index=False)
     optimal_drift.to_csv('OptimalStoryDrift.csv', sep=',', index=False)
