@@ -32,11 +32,11 @@ base_directory = pathlib.Path(os.getcwd())
 # Those variables are used to facilitate performing the design
 
 # Ix ratio between exterior column and interior column
-EXTERIOR_INTERIOR_COLUMN_RATIO = 1.0
-# EXTERIOR_INTERIOR_COLUMN_RATIO = 0.70
+# EXTERIOR_INTERIOR_COLUMN_RATIO = 1.0
+EXTERIOR_INTERIOR_COLUMN_RATIO = 0.70
 
 # Zx ratio between beam and interior column
-BEAM_TO_COLUMN_RATIO = 0.80  # Used when SCWB = 1.0
+BEAM_TO_COLUMN_RATIO = 0.60  # Used when SCWB = 1.0
 # BEAM_TO_COLUMN_RATIO = 0.33  # Used when SCWB = 1.5
 # BEAM_TO_COLUMN_RATIO = 0.33  # Try this when SCWB = 2.0
 
@@ -67,6 +67,9 @@ ACCIDENTAL_TORSION = 0.55/0.50
 # Please note this period is only for computing drift, not for computing required strength.
 PERIOD_FOR_DRIFT_LIMIT = True
 
+# Define a scalar to denote the drift limit which is based on ASCE 7-16 Table 12.12-1
+DRIFT_LIMIT = 0.020
+
 
 ##########################################################################
 #        User Defined Ratios Involved in Check Design                    #
@@ -78,7 +81,7 @@ PERIOD_FOR_DRIFT_LIMIT = True
 STRONG_COLUMN_WEAK_BEAM_RATIO = 1.0
 # STRONG_COLUMN_WEAK_BEAM_RATIO = float(sys.argv[4])
 
-RBS_STIFFNESS_FACTOR = 1.09
+RBS_STIFFNESS_FACTOR = 1.10
 
 # #########################################################################
 #           Open the section database and store it as a global variable   #

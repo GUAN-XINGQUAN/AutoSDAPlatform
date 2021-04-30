@@ -35,9 +35,9 @@ start_time = time.time()
 # ********************* Revision Ends Here *******************************
 
 # ********************* Single Building Case Ends Here *******************
-IDs = [11]
+IDs = [1]
 for id in IDs:
-    building_id = 'Test' + str(id)
+    building_id = 'Building_' + str(id)
     print("Design for Building ID = ", building_id)
     seismic_design(building_id, base_directory)
 

@@ -31,9 +31,9 @@ from model_generation import model_generation
 #                       Generate Models                                  #
 ##########################################################################
 
-IDs = [11]
+IDs = [0]
 for id in IDs:
-    building_id = 'Test' + str(id)
+    building_id = 'Building_' + str(id)
     print(building_id)
     model_generation(building_id, base_directory)
 
