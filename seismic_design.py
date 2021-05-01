@@ -26,9 +26,9 @@ from global_variables import UPPER_LOWER_COLUMN_Zx
 from global_variables import RBS_STIFFNESS_FACTOR
 from global_variables import DRIFT_LIMIT
 
-from construction_functions import create_column_set
-from construction_functions import create_beam_set
-from construction_functions import create_connection_set
+from design_helper import create_column_set
+from design_helper import create_beam_set
+from design_helper import create_connection_set
 
 ##########################################################################
 #                         Function Implementation                        #
