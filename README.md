@@ -1,5 +1,13 @@
 # AutoSDA Platform
 
+### Recent updates about AutoSDA:
+
+May 1, 2021: AutoSDA now has been updated to generate the design using non-RBS connection or without using doubler plate. If you are interested in this most recent beta version, please email me.
+
+
+
+-----------------------------
+
 ### Reference:
 
 [1] Guan, X., Burton, V., Sabol, T. (2020). Python-based computational platform to automate seismic design, nonlinear structural model construction and analysis of steel moment resisting frames. Engineering Structures, 224, 111199.
