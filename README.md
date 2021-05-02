@@ -58,6 +58,12 @@ The user could adjust some coefficients, such as the moment of inertia ratio bet
 
 *Preprocessing*: The python codes relating to preprocessing the electronic steel section database is stored here. The user does not need to access to this folder.
 
+### If you want to evaluate an existing design:
+
+Put the existing design member sizes into *./BuildingData/Evaluate_1/TrialMemberSize.csv* and *run evaluate_design_only.py* file. The evaluation results will be displayed in the terminal window.
+
+See *./BuildingData/Evaluate_1/* for the example.
+
 ### Any questions or suggestion:
 
 Send an email to: guanxingquan@ucla.edu
