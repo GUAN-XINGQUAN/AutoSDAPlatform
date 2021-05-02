@@ -13,8 +13,6 @@ Revised in Feb. 2019
 import copy
 import numpy as np
 import os
-import pandas as pd
-import pickle
 import sys
 
 from building_information import Building
@@ -29,6 +27,7 @@ from global_variables import DRIFT_LIMIT
 from design_helper import create_column_set
 from design_helper import create_beam_set
 from design_helper import create_connection_set
+from design_helper import save_all_design_results
 
 ##########################################################################
 #                         Function Implementation                        #
@@ -1179,124 +1178,12 @@ def seismic_design(building_id, base_directory):
     # Change the working directory to building data
     os.chdir(building_1.directory['building data'])
 
-    # Nonlinear model generation may require information for building, beam/column hinge, and panel zone thickness.
-    # Store the building class to "building.pkl"
-    with open('optimal_building.pkl', 'wb') as output_file:
-        pickle.dump(building_1, output_file)
+    # Change the working directory to building data
+    os.chdir(building_1.directory['building data'])
 
-    with open('construction_building.pkl', 'wb') as output_file:
-        pickle.dump(building_3, output_file)
-
-    # Store the beam set to "beam_set.pkl"
-    with open('optimal_beam_set.pkl', 'wb') as output_file:
-        pickle.dump(beam_set, output_file)
-
-    # Store the column set to "column_set.pkl"
-    with open('optimal_column_set.pkl', 'wb') as output_file:
-        pickle.dump(column_set, output_file)
-
-    # Store the connection set to "connection_set.pkl"
-    with open('optimal_connection_set.pkl', 'wb') as output_file:
-        pickle.dump(connection_set, output_file)
-
-    # Store the construction beam set
-    with open('construction_beam_set.pkl', 'wb') as output_file:
-        pickle.dump(construction_beam_set, output_file)
-
-    # Store the construction column set
-    with open('construction_column_set.pkl', 'wb') as output_file:
-        pickle.dump(construction_column_set, output_file)
-
-    with open('construction_connection_set.pkl', 'wb') as output_file:
-        pickle.dump(construction_connection_set, output_file)
-
-    # Store the member sizes and story drift into csv files.
-    optimal_member_size = pd.DataFrame(data=np.column_stack([building_1.member_size['exterior column'],
-                                                             building_1.member_size['interior column'],
-                                                             building_1.member_size['beam']]),
-                                       columns=['exterior column', 'interior column', 'beam'])
-    construction_size = pd.DataFrame(data=np.column_stack([building_3.construction_size['exterior column'],
-                                                           building_3.construction_size['interior column'],
-                                                           building_3.construction_size['beam']]),
-                                     columns=['exterior column', 'interior column', 'beam'])
-    optimal_drift = pd.DataFrame(data=building_1.elastic_response['story drift'], columns=['story drift'])
-    construction_drift = pd.DataFrame(data=building_3.elastic_response['story drift'], columns=['story drift'])
-    optimal_member_size.to_csv('OptimalMemberSize.csv', sep=',', index=False)
-    construction_size.to_csv('ConstructionSize.csv', sep=',', index=False)
-    optimal_drift.to_csv('OptimalStoryDrift.csv', sep=',', index=False)
-    construction_drift.to_csv('ConstructionDrift.csv', sep=',', index=False)
-
-    # Store the doubler plate thickness
-    header = ['connection %s' % bay for bay in range(building_1.geometry['number of X bay']+1)]
-    # Initialize the dataframe to store doubler plate thickness
-    optimal_doubler_plate = pd.DataFrame(columns=header)
-    construction_doubler_plate = pd.DataFrame(columns=header)
-    # Fill this two dataframes
-    for row in range(building_1.geometry['number of story']):
-        for col in range(building_1.geometry['number of X bay']+1):
-            name = header[col]
-            optimal_doubler_plate.loc[row, name] = connection_set[row][col].doubler_plate_thickness
-            construction_doubler_plate.loc[row, name] = construction_connection_set[row][col].doubler_plate_thickness
-    optimal_doubler_plate.to_csv('OptimalDoublerPlate.csv', sep=',', index=False)
-    construction_doubler_plate.to_csv('ConstructionDoublerPlate.csv', sep=',', index=False)
-
-    # Store the strong column beam ratio
-    header = ['joint %s' % bay for bay in range(building_1.geometry['number of X bay'] + 1)]
-    # Initialize the dataframe using the headers defined above
-    optimal_column_beam_ratio = pd.DataFrame(columns=header)
-    construction_column_beam_ratio = pd.DataFrame(columns=header)
-    # Fill this dataframe
-    for row in range(building_1.geometry['number of story']):
-        for col in range(building_1.geometry['number of X bay'] + 1):
-            name = header[col]
-            if row == building_1.geometry['number of story'] - 1:
-                optimal_column_beam_ratio.loc[row, name] = 'NA'
-                construction_column_beam_ratio.loc[row, name] = 'NA'
-            else:
-                optimal_column_beam_ratio.loc[row, name] = \
-                    connection_set[row][col].moment['Mpc'] \
-                    / connection_set[row][col].moment['Mpb']
-                construction_column_beam_ratio.loc[row, name] = \
-                    construction_connection_set[row][col].moment['Mpc'] \
-                    / construction_connection_set[row][col].moment['Mpb']
-    optimal_column_beam_ratio.to_csv('OptimalColumnBeamRatio.csv', sep=',', index=False)
-    construction_column_beam_ratio.to_csv('ConstructionColumnBeamRatio.csv', sep=',', index=False)
-
-    # Store the demand to capacity ratio for columns
-    # Define the headers for the columns DC ratio
-    header = ['column %s' % bay for bay in range(building_1.geometry['number of X bay'] + 1)]
-    force_list = ['axial', 'shear', 'flexural']
-    for force in force_list:
-        column_DC = [[0] * (building_1.geometry['number of X bay'] + 1)
-                     for _ in range(building_1.geometry['number of story'])]
-        construction_column_DC = [[0] * (building_1.geometry['number of X bay'] + 1)
-                                  for _ in range(building_1.geometry['number of story'])]
-        for story in range(0, building_1.geometry['number of story']):
-            for bay in range(0, building_1.geometry['number of X bay']+1):
-                column_DC[story][bay] = column_set[story][bay].demand_capacity_ratio[force]
-                construction_column_DC[story][bay] = construction_column_set[story][bay].demand_capacity_ratio[force]
-        file_name = 'OptimalColumn' + force[0].upper() + force[1:] + 'DCRatio.csv'
-        (pd.DataFrame(columns=header, data=column_DC)).to_csv(file_name, sep=',', index=False)
-        file_name = 'ConstructionColumn' + force[0].upper() + force[1:] + 'DCRatio.csv'
-        (pd.DataFrame(columns=header, data=construction_column_DC).to_csv(file_name, sep=',', index=False))
-
-    # Store the demand to capacity ratio for beams
-    # Define the headers for the beams DC ratio
-    header = ['beam %s' % bay for bay in range(building_1.geometry['number of X bay'])]
-    force_list = ['shear', 'flexural']
-    for force in force_list:
-        beam_DC = [[0] * (building_1.geometry['number of X bay'])
-                   for _ in range(building_1.geometry['number of story'])]
-        construction_beam_DC = [[0] * (building_1.geometry['number of X bay'])
-                                for _ in range(building_1.geometry['number of story'])]
-        for story in range(0, building_1.geometry['number of story']):
-            for bay in range(0, building_1.geometry['number of X bay']):
-                beam_DC[story][bay] = beam_set[story][bay].demand_capacity_ratio[force]
-                construction_beam_DC[story][bay] = construction_beam_set[story][bay].demand_capacity_ratio[force]
-        file_name = 'OptimalBeam' + force[0].upper() + force[1:] + 'DCRatio.csv'
-        (pd.DataFrame(columns=header, data=beam_DC)).to_csv(file_name, sep=',', index=False)
-        file_name = 'ConstructionBeam' + force[0].upper() + force[1:] + 'DCRatio.csv'
-        (pd.DataFrame(columns=header, data=construction_beam_DC).to_csv(file_name, sep=',', index=False))
+    save_all_design_results(building_1, column_set, beam_set, connection_set, False)
+    save_all_design_results(building_3, construction_column_set, construction_beam_set, construction_connection_set,
+                            True)
 
     # Go back to base directory
     os.chdir(base_directory)
