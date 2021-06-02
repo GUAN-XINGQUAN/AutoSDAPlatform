@@ -163,7 +163,7 @@ def determine_floor_height(number_of_story, first_story_height, typical_story_he
     return floor_height
 
 
-def calculate_Cs_coefficient(SDS, SD1, S1, T, TL, R, Ie):
+def calculate_Cs_coefficient(SDS, SD1, S1, T, TL, R, Ie, for_drift):
     """
     This function is used to calculate the seismic response coefficient based on ASCE 7-10 Section 12.8.1
     Unit: kips, g (gravity constant), second
@@ -176,6 +176,7 @@ def calculate_Cs_coefficient(SDS, SD1, S1, T, TL, R, Ie):
     :param TL: long-period transition
     :param R: a scalar given in building information
     :param Ie: a scalar given in building information
+    :param for_drift: a Boolean variable to denote whether the Cs coefficient is computed for drift.
     :return: Cs: seismic response coefficient; determined using Equations 12.8-2 to 12.8-6
     """
     # Equation 12.8-2
@@ -196,11 +197,13 @@ def calculate_Cs_coefficient(SDS, SD1, S1, T, TL, R, Ie):
     # Equation 12.8-5, Cs shall not be less than the following value
     Cs_lower_1 = np.max([0.044*SDS*Ie, 0.01])
 
-    # Compare the Cs value with lower bound
-    if Cs >= Cs_lower_1:
-        pass
-    else:
-        Cs = Cs_lower_1
+    # Compare the Cs value with lower bound: if the Cs coefficient is used to compute the lateral force for drift, then
+    # Equation 12.8-5 need not be considered.
+    if not for_drift:
+        if Cs >= Cs_lower_1:
+            pass
+        else:
+            Cs = Cs_lower_1
 
     # Equation 12.8-6. if S1 is equal to or greater than 0.6g, Cs shall not be less than the following value
     if S1 >= 0.6:

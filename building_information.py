@@ -231,11 +231,11 @@ class Building(object):
         Cs_for_strength = calculate_Cs_coefficient(self.elf_parameters['SDS'], self.elf_parameters['SD1'],
                                                    self.elf_parameters['S1'], period_for_strength,
                                                    self.elf_parameters['TL'], self.elf_parameters['R'],
-                                                   self.elf_parameters['Ie'])
+                                                   self.elf_parameters['Ie'], False)
         Cs_for_drift = calculate_Cs_coefficient(self.elf_parameters['SDS'], self.elf_parameters['SD1'],
                                                 self.elf_parameters['S1'], period_for_drift,
                                                 self.elf_parameters['TL'], self.elf_parameters['R'],
-                                                self.elf_parameters['Ie'])
+                                                self.elf_parameters['Ie'], True)
         # Calculate the base shear
         base_shear_for_strength = Cs_for_strength * np.sum(self.gravity_loads['floor weight'])
         base_shear_for_drift = Cs_for_drift * np.sum(self.gravity_loads['floor weight'])
