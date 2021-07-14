@@ -1,10 +1,9 @@
 # AutoSDA Platform
 
 ### Recent updates about AutoSDA:
+June 18, 2021: AutoSDA now has been updated to include the modal response spectrum analysis (MRSA) based design method.
 
-May 1, 2021: AutoSDA now has been updated to generate the design using non-RBS connection or without using doubler plate. If you are interested in this most recent beta version, please email me.
-
-
+May 1, 2021: AutoSDA now has been updated to generate the design using non-RBS connection or without using doubler plate.
 
 -----------------------------
 
