@@ -35,15 +35,6 @@ from global_variables import EXTERIOR_INTERIOR_COLUMN_RATIO
 from global_variables import BEAM_TO_COLUMN_RATIO
 from global_variables import IDENTICAL_SIZE_PER_STORY
 
-# #########################################################################
-#           Open the section database and store it as a global variable   #
-# #########################################################################
-
-
-# # Global constant: SECTION_DATABASE (a panda dataframe read from .csv file)
-# with open('AllSectionDatabase.csv', 'r') as file:
-#     SECTION_DATABASE = pd.read_csv(file, header=0)
-
 
 # #########################################################################
 #          Define a class including all building information              #
@@ -91,10 +82,8 @@ class Building(object):
         self.read_geometry()
         self.read_gravity_loads()
         self.read_elf_parameters()
-        # self.compute_seismic_force()
         self.determine_member_candidate()
         self.initialize_member()
-        # self.initialize_member_v2()
 
     def define_directory(self):
         # Define all useful paths based on the building UID and path to root folder
@@ -155,9 +144,7 @@ class Building(object):
         (1) Change the directory to the folder where the load data are stored
         (2) Read the .csv files and assign save load values to object values
         """
-        os.chdir(self.directory['building data'])
-        with open('Loads.csv', 'r') as csvfile:
-            loads_data = pd.read_csv(csvfile, header=0)
+        loads_data = pd.read_csv(os.path.join(self.directory['building data'], 'Loads.csv'), header=0)
 
         # All data is a list (array). Length is the number of story
         # Be cautious about the unit
@@ -183,9 +170,7 @@ class Building(object):
         (1) Read equivalent lateral force parameters
         (2) Calculate SMS, SM1, SDS, SD1 values and save them into the attribute
         """
-        os.chdir(self.directory['building data'])
-        with open('ELFParameters.csv', 'r') as csvfile:
-            elf_parameters_data = pd.read_csv(csvfile, header=0)
+        elf_parameters_data = pd.read_csv(os.path.join(self.directory['building data'], 'ELFParameters.csv'), header=0)
 
         # Determine Fa and Fv coefficient based on site class and Ss and S1 (ASCE 7-10 Table 11.4-1 & 11.4-2)
         # Call function defined in "help_functions.py" to calculate two coefficients: Fa and Fv
@@ -262,9 +247,7 @@ class Building(object):
         :return: a dictionary which contains the all possible sizes for exterior columns, interior columns, and beams.
         """
         # Read the user-specified depths for interior columns, exterior columns, and beams.
-        os.chdir(self.directory['building data'])
-        with open('MemberDepth.csv', 'r') as csvfile:
-            depth_data = pd.read_csv(csvfile, header=0)
+        depth_data = pd.read_csv(os.path.join(self.directory['building data'], 'MemberDepth.csv'), header=0)
         # Initialize dictionary that will be used to store all possible section sizes for each member (in each story)
         interior_column_candidate = {}
         exterior_column_candidate = {}
@@ -350,7 +333,6 @@ class Building(object):
         path_modal_period = self.directory['building elastic model'] / 'EigenAnalysis'
         os.chdir(path_modal_period)
         # Save the first mode period in elf_parameters
-        # period = np.loadtxt('Periods.out')
         period = pd.read_csv('Periods.out', header=None)
         self.elf_parameters['modal period'] = np.asscalar((period.iloc[0, 0]))
 
@@ -411,9 +393,7 @@ class Building(object):
         temp_size = increase_member_size(self.element_candidate[type_column]['story %s' % (target_story+1)],
                                          self.member_size[type_column][target_story])
         self.member_size[type_column][target_story] = temp_size
-        # temp_size_2 = increase_member_size(self.element_candidate['exterior column']['story %x' % (target_story+1)],
-        #                                    self.member_size['exterior column'][target_story])
-        # self.member_size['exterior column'][target_story] = temp_size_2
+
 
     def upscale_beam(self, target_floor):
         """
@@ -425,32 +405,6 @@ class Building(object):
                                          self.member_size['beam'][target_floor])
         self.member_size['beam'][target_floor] = temp_size
 
-    # ************************************* Keep previous version as backup ********************************************
-    # def constructability(self):
-    #     """
-    #     This method is used to update the member size by considering the constructability (ease of construction)
-    #     :return: a dictionary which includes the member sizes after consideration of constructability.
-    #              Those siezes are considered to be the actual final design.
-    #     """
-    #     # Make a deep copy of the member sizes and stored them in a new dictionary named construction_size
-    #     # Use deep copy to avoid changing the varaiables stored in member size
-    #     temp_size = copy.deepcopy(self.member_size)
-    #     # Update interior and exterior column size
-    #     member = ['interior column', 'exterior column']
-    #     for mem in member:
-    #         self.construction_size[mem] = constructability_helper(temp_size[mem], IDENTICAL_SIZE_PER_STORY,
-    #                                                               self.geometry['number of story'])
-    #     # Update beam size using relative ratio between beams and columns
-    #     temp_beam = []
-    #     for story in range(0, self.geometry['number of story']):
-    #         reference_property = search_section_property(self.construction_size['interior column'][story],
-    #                                                      SECTION_DATABASE)
-    #         beam_size = search_member_size('Zx', reference_property['Zx'] * BEAM_TO_COLUMN_RATIO,
-    #                                        self.element_candidate['beam']['floor level %s' % (story + 2)],
-    #                                        SECTION_DATABASE)
-    #         temp_beam.append(beam_size)
-    #     self.construction_size['beam'] = temp_beam
-    # ********************************************* Previous version ends here *****************************************
 
     def constructability_beam(self):
         """

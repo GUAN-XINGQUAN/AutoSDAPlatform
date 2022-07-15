@@ -64,7 +64,6 @@ class Beam(object):
         # Use the lower bound as the initial value for a and b
         self.RBS_dimension['a'] = 0.5 * self.section['bf']
         self.RBS_dimension['b'] = 0.65 * self.section['d']
-        #self.RBS_dimension['c'] = 0.1 * self.section['bf']
         self.RBS_dimension['c'] = 0.25 * self.section['bf']
 
     def check_flange(self, steel):
@@ -165,7 +164,7 @@ class Beam(object):
         """
         self.flag = True
         for key in self.is_feasible.keys():
-            if self.is_feasible[key] == False:
+            if not self.is_feasible[key]:
                 self.flag = False
         return self.flag
 

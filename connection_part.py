@@ -117,11 +117,6 @@ class Connection(object):
                 sys.stderr.write('Beam and column depth & weight are not acceptable!\n')
                 self.is_feasible['geometry limits'] = False
         elif connection_type == 'top exterior':
-            # ****************** Debug using only *************************
-            # print("top exterior:")
-            # print("column size = ", bottom_column.section['section size'])
-            # print("beam size = ", left_beam.section['section size'])
-            # ****************** Debug ends here **************************
             # Connection only has one beam and one column
             left_beam_depth = extract_depth(left_beam.section['section size'])
             left_beam_weight = extract_weight(left_beam.section['section size'])
@@ -486,6 +481,6 @@ class Connection(object):
         # Loop over each checking result to see if it is feasible or not
         self.flag = True
         for key in self.is_feasible.keys():
-            if self.is_feasible[key] == False:
+            if not self.is_feasible[key]:
                 self.flag = False
         return self.flag

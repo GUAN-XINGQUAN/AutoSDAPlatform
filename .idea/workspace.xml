@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="35a931b8-886e-45e9-ba46-2b701790a739" name="Default Changelist" comment="" />
+    <list default="true" id="35a931b8-886e-45e9-ba46-2b701790a739" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/beam_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/beam_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/building_information.py" beforeDir="false" afterPath="$PROJECT_DIR$/building_information.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_part.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection_part.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluate_design_only.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluate_design_only.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global_variables.py" beforeDir="false" afterPath="$PROJECT_DIR$/global_variables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/help_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/help_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_generation.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_generation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seismic_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/seismic_design.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

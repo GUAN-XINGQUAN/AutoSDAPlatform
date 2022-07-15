@@ -145,7 +145,7 @@ def determine_floor_height(number_of_story, first_story_height, typical_story_he
     This function is used to calculate the height for each floor level: from ground floor to roof
     Obviously, the height for ground floor level is zero
     Unit: foot (ft)
-    :param number_of_story: a scalar which desbribes the number of story for a certain building
+    :param number_of_story: a scalar which describes the number of story for a certain building
     :param first_story_height: a scalar which describes the 1st story height of the building
     :param typical_story_height: a scalar which describes the typical story height for other stories
            except 1st story
@@ -508,47 +508,6 @@ def constructability_helper(section_size, identical_size_per_story, total_story,
         # Update the ending index for next "identical story block"
         ending_index = variation_story[-1]
     return section_size
-
-    # # Loop over all stories from top to bottom to consider the constructability
-    # starting_story = total_story - 1
-    # ending_story = variation_story[-1]
-    # while starting_story > 0:
-    #     # For stories within "identical story block"
-    #     for story in range(starting_story, ending_story, -1):
-    #         # Only revise size when adjacent stories have different size
-    #         if section_size[story - 1] != section_size[story]:
-    #             current_section_property = search_section_property(section_size[story], SECTION_DATABASE)
-    #             next_section_property = search_section_property(section_size[story - 1], SECTION_DATABASE)
-    #             if current_section_property[sorted_quanity] > next_section_property[sorted_quanity]:
-    #                 section_size[story - 1] = section_size[story]
-    #             else:
-    #                 section_size[story] = section_size[story - 1]
-    #
-    #     # For stories at the "identical story block boundary"
-    #     story = variation_story[-1]
-    #     if story == 0:
-    #         break
-    #     if section_size[story - 1] != section_size[story]:
-    #         current_depth = extract_depth(section_size[story])
-    #         next_depth = extract_depth(section_size[story - 1])
-    #         # Case 1: lower member has same depth but smaller weight
-    #         if next_depth == current_depth:
-    #             current_weight = extract_weight(section_size[story])
-    #             next_weight = extract_weight(section_size[story - 1])
-    #             if next_weight < current_weight:
-    #                 section_size[story - 1] = section_size[story]
-    #         # Case 2: lower member has smaller depth
-    #         elif next_depth < current_depth:
-    #             section_size[story - 1] = section_size[story]
-    #         # Case 3: lower member has larger depth
-    #         else:
-    #             pass
-    #     starting_story = variation_story[-1] - 1
-    #     if starting_story < 0:
-    #         break
-    #     variation_story.pop()
-    #     ending_story = variation_story[-1]
-    # return section_size
 
 
 def increase_member_size(candidate, current_size):

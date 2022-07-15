@@ -88,10 +88,10 @@ RBS_STIFFNESS_FACTOR = 1.10
 # #########################################################################
 
 # Global constant: SECTION_DATABASE (a panda dataframe read from .csv file) (All sizes)
-SECTION_DATABASE = pd.read_csv('AllSectionDatabase.csv', header=0)
+SECTION_DATABASE = pd.read_csv(os.path.join(base_directory, 'AllSectionDatabase.csv'), header=0)
 
 # Global constant: COLUMN_DATABASE (only contains the sizes that are feasible for columns)
-COLUMN_DATABASE = pd.read_csv('ColumnDatabase.csv', header=0)
+COLUMN_DATABASE = pd.read_csv(os.path.join(base_directory, 'ColumnDatabase.csv'), header=0)
 
 # Global constant: BEAM_DATABASE (only contains the sizes that are feasible for beams)
-BEAM_DATABASE = pd.read_csv('BeamDatabase.csv', header=0)
+BEAM_DATABASE = pd.read_csv(os.path.join(base_directory, 'BeamDatabase.csv'), header=0)

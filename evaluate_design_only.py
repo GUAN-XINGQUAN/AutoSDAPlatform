@@ -15,6 +15,7 @@ from building_information import Building
 from elastic_analysis import ElasticAnalysis
 from elastic_output import ElasticOutput
 from global_variables import steel
+from global_variables import DRIFT_LIMIT
 
 from design_helper import create_column_set
 from design_helper import create_beam_set
@@ -33,8 +34,6 @@ base_directory = pathlib.Path(os.getcwd())
 ADOPT_RBS_CONNECTION = False
 # Whether the doubler plate is allowed to be used: True-> permit to use doubler plate.
 PERMIT_DOUBLER_PLATE = True
-# Drift limit.
-drift_limit = 0.02
 
 
 ##########################################################################
@@ -81,7 +80,7 @@ else:
 # Check story drift
 drift_check = \
     (np.max(building.elastic_response['story drift']) * building.elf_parameters['Cd'] * RBS_STIFFNESS_FACTOR
-     > drift_limit / building.elf_parameters['rho'])
+     > DRIFT_LIMIT / building.elf_parameters['rho'])
 
 
 ##########################################################################
