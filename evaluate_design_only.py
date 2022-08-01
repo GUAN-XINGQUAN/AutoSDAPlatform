@@ -27,11 +27,11 @@ from design_helper import save_all_design_results
 ##########################################################################
 
 # The building folder name
-building_id = 'Evaluate_1'
+building_id = 'Evaluate_11'
 # The directory path where the AutoSDA is.
 base_directory = pathlib.Path(os.getcwd())
 # Whether the connection is RBS connection: True-> use RBS connection
-ADOPT_RBS_CONNECTION = False
+ADOPT_RBS_CONNECTION = True
 # Whether the doubler plate is allowed to be used: True-> permit to use doubler plate.
 PERMIT_DOUBLER_PLATE = True
 
